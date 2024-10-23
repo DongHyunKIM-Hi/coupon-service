@@ -1,14 +1,22 @@
 package org.example.couponcore.repository;
 
-import org.example.couponcore.exception.CouponIssueException;
-import org.example.couponcore.exception.ErrorCode;
-import org.example.couponcore.model.entity.base.Coupon;
-import org.springframework.data.jpa.repository.JpaRepository;
+import static org.example.couponcore.model.entity.base.QCouponIssue.couponIssue;
 
-public interface CouponRepository extends JpaRepository<Coupon, Long> {
+import com.querydsl.jpa.JPQLQueryFactory;
+import lombok.RequiredArgsConstructor;
+import org.example.couponcore.model.entity.base.CouponIssue;
+import org.springframework.stereotype.Repository;
 
-    default Coupon findCouponById(Long couponId) {
-        return findById(couponId).orElseThrow(()
-            -> new CouponIssueException(ErrorCode.COUPON_NOT_EXIST, "해당 쿠폰이 존재하지 않습니다. 검색한 쿠폰 아이디 : %s".formatted(couponId)));
+@RequiredArgsConstructor
+@Repository
+public class CouponRepository {
+
+    private final JPQLQueryFactory queryFactory;
+
+    public CouponIssue findFirstCouponIssue(long couponId, long userId) {
+        return queryFactory.selectFrom(couponIssue)
+            .where(couponIssue.couponId.eq(couponId))
+            .where(couponIssue.userId.eq(userId))
+            .fetchFirst();
     }
 }

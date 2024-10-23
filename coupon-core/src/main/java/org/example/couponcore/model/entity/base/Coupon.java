@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.couponcore.exception.CouponIssueException;
@@ -21,6 +22,7 @@ import org.example.couponcore.model.enums.CouponType;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "coupons")
 public class Coupon extends BaseEntity{
 
