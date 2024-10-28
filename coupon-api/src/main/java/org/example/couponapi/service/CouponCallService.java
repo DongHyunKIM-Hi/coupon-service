@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.couponapi.model.request.CouponIssueRequestDto;
 import org.example.couponapi.model.response.CouponIssueResponseDto;
 import org.example.couponcore.component.LockExecutor;
+import org.example.couponcore.repository.CouponRedisRepository;
+import org.example.couponcore.service.CouponIssueRedisService;
 import org.example.couponcore.service.CouponIssueService;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class CouponCallService {
 
     private final CouponIssueService couponIssueService;
+    private final CouponIssueRedisService couponIssueRedisService;
     private final LockExecutor lockExecutor;
 
     public CouponIssueResponseDto issueRequest(CouponIssueRequestDto requestDto) {
@@ -25,4 +28,8 @@ public class CouponCallService {
         return new CouponIssueResponseDto(true,null);
     }
 
+    public CouponIssueResponseDto issueRequestBySortedSet(CouponIssueRequestDto requestDto) {
+        couponIssueRedisService.issueBySortedSet(requestDto.couponId(),requestDto.userId());
+        return new CouponIssueResponseDto(true,null);
+    }
 }
