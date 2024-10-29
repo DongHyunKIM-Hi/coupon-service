@@ -14,4 +14,21 @@ public class CouponRedisRepository  {
     public Boolean zAdd(String key, String value, double score) {
         return redisTemplate.opsForZSet().addIfAbsent(key,value,score);
     }
+
+    public Long sAdd(String key, String value) {
+        return redisTemplate.opsForSet().add(key, value);
+    }
+
+    public Long sCard(String key) {
+        return redisTemplate.opsForZSet().size(key);
+    }
+
+    public Boolean sIsMember(String key, String value) {
+        return redisTemplate.opsForSet().isMember(key,value);
+    }
+
+    public Long rPush(String key, String value) {
+        return redisTemplate.opsForList().rightPush(key,value);
+    }
+
 }

@@ -20,8 +20,13 @@ public class CouponController {
         return ResponseEntity.ok(couponCallService.issueRequest(requestDto));
     }
 
-    @PostMapping("/v2/issue/by-sorted-set")
+    @PostMapping("/v2/issue")
     public ResponseEntity<CouponIssueResponseDto> couponIssueBySortedSet(@RequestBody CouponIssueRequestDto requestDto) {
         return ResponseEntity.ok(couponCallService.issueRequestBySortedSet(requestDto));
+    }
+
+    @PostMapping("/v3/issue")
+    public ResponseEntity<CouponIssueResponseDto> couponIssueBySet(@RequestBody CouponIssueRequestDto requestDto) {
+        return ResponseEntity.ok(couponCallService.issueRequestBySet(requestDto));
     }
 }

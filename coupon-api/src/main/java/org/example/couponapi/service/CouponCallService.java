@@ -32,4 +32,9 @@ public class CouponCallService {
         couponIssueRedisService.issueBySortedSet(requestDto.couponId(),requestDto.userId());
         return new CouponIssueResponseDto(true,null);
     }
+
+    public CouponIssueResponseDto issueRequestBySet(CouponIssueRequestDto requestDto) {
+        couponIssueRedisService.issue(requestDto.couponId(),requestDto.userId());
+        return new CouponIssueResponseDto(true,null);
+    }
 }
