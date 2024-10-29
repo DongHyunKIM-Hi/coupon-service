@@ -1,4 +1,4 @@
-package org.example.couponcore.config;
+package org.example.couponcore.utils;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;

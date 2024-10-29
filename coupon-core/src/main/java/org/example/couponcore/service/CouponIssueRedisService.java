@@ -6,7 +6,8 @@ import static org.example.couponcore.utils.CouponRedisUtils.getCouponKey;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.couponcore.config.JacksonUtils;
+import org.example.couponcore.component.LockExecutor;
+import org.example.couponcore.utils.JacksonUtils;
 import org.example.couponcore.exception.CouponIssueException;
 import org.example.couponcore.exception.ErrorCode;
 import org.example.couponcore.model.dto.request.CouponIssueRequestDto;
@@ -21,6 +22,7 @@ public class CouponIssueRedisService {
 
     private final CouponRedisRepository couponRedisRepository;
     private final CouponIssueService couponIssueService;
+    private final LockExecutor lockExecutor;
 
 
     public void issueBySortedSet(long couponId, long userId) {
@@ -31,9 +33,13 @@ public class CouponIssueRedisService {
     public void issue(long couponId, long userId) {
 
         Coupon coupon = couponIssueService.findCoupon(couponId);
-        checkValidateToIssueCoupon(couponId,userId,coupon);
-        issueRequest(couponId,userId);
 
+        String lockName = "lock_%s".formatted(couponId);
+
+        lockExecutor.execute(lockName, 3000,3000, ()-> {
+            checkValidateToIssueCoupon(couponId,userId,coupon);
+            issueRequest(couponId,userId);
+        });
     }
 
     private void checkValidateToIssueCoupon(long couponId, long userId, Coupon coupon) {
