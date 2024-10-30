@@ -1,22 +1,11 @@
 package org.example.couponcore.service;
 
-import static org.example.couponcore.utils.CouponRedisUtils.getCouponIssueQueue;
-import static org.example.couponcore.utils.CouponRedisUtils.getCouponKey;
-
 import lombok.RequiredArgsConstructor;
 import org.example.couponcore.component.LockExecutor;
-import org.example.couponcore.exception.CouponIssueException;
-import org.example.couponcore.exception.ErrorCode;
-import org.example.couponcore.model.dto.request.CouponIssueRequestDto;
-import org.example.couponcore.model.entity.base.Coupon;
-import org.example.couponcore.model.entity.base.CouponIssue;
 import org.example.couponcore.model.redis.CouponRedisEntity;
-import org.example.couponcore.repository.CouponIssueJpaRepository;
-import org.example.couponcore.repository.CouponJpaRepository;
-import org.example.couponcore.repository.CouponRepository;
-import org.example.couponcore.utils.JacksonUtils;
+import org.example.couponcore.service.cache.CouponCacheService;
+import org.example.couponcore.service.cache.CouponIssueRedisService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service

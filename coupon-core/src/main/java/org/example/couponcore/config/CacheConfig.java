@@ -1,10 +1,13 @@
 package org.example.couponcore.config;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConfiguration;
@@ -19,7 +22,8 @@ public class CacheConfig {
 
     private final RedisConnectionFactory redisConnectionFactory;
 
-    @Bean
+    @Bean(name = "redisCacheManager")
+    @Primary
     public CacheManager redisCacheManager() {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
             .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
@@ -30,5 +34,15 @@ public class CacheConfig {
             .cacheDefaults(redisCacheConfiguration)
             .build();
 
+    }
+
+    @Bean
+    public CacheManager localCacheManager() {
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofSeconds(10))
+            .maximumSize(1000)
+        );
+        return caffeineCacheManager;
     }
 }

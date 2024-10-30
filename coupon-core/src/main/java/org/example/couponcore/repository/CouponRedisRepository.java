@@ -25,6 +25,14 @@ public class CouponRedisRepository  {
         return redisTemplate.opsForZSet().addIfAbsent(key,value,score);
     }
 
+    public String lIndex(String key, long index) {
+        return redisTemplate.opsForList().index(key, index);
+    }
+
+    public String lPop(String key) {
+        return redisTemplate.opsForList().leftPop(key);
+    }
+
     public Long sAdd(String key, String value) {
         return redisTemplate.opsForSet().add(key, value);
     }
@@ -39,6 +47,10 @@ public class CouponRedisRepository  {
 
     public Long rPush(String key, String value) {
         return redisTemplate.opsForList().rightPush(key,value);
+    }
+
+    public Long lSize(String key) {
+        return redisTemplate.opsForList().size(key);
     }
 
     private RedisScript<String> issueRequestScript() {

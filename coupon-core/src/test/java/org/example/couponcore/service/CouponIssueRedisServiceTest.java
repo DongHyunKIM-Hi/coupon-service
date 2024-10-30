@@ -15,6 +15,7 @@ import org.example.couponcore.exception.CouponIssueException;
 import org.example.couponcore.model.dto.request.CouponIssueRequestDto;
 import org.example.couponcore.model.entity.base.Coupon;
 import org.example.couponcore.repository.CouponJpaRepository;
+import org.example.couponcore.service.cache.CouponCacheService;
 import org.example.couponcore.utils.JacksonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

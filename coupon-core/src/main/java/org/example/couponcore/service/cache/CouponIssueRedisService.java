@@ -1,4 +1,4 @@
-package org.example.couponcore.service;
+package org.example.couponcore.service.cache;
 
 import static org.example.couponcore.utils.CouponRedisUtils.getCouponIssueQueue;
 import static org.example.couponcore.utils.CouponRedisUtils.getCouponKey;

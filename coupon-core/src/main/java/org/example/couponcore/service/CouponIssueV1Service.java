@@ -7,9 +7,11 @@ import org.example.couponcore.exception.CouponIssueException;
 import org.example.couponcore.exception.ErrorCode;
 import org.example.couponcore.model.entity.base.Coupon;
 import org.example.couponcore.model.entity.base.CouponIssue;
+import org.example.couponcore.model.event.CouponIssueCompleteEvent;
 import org.example.couponcore.repository.CouponIssueJpaRepository;
 import org.example.couponcore.repository.CouponJpaRepository;
 import org.example.couponcore.repository.CouponRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,21 +23,15 @@ public class CouponIssueV1Service {
     private final CouponJpaRepository couponJpaRepository;
     private final CouponRepository couponRepository;
     private final CouponIssueJpaRepository couponIssueJpaRepository;
-    private final LockExecutor lockExecutor;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
 
     @Transactional
     public void issue(long couponId, long userId) {
-        String lockName = "lock_%s".formatted(couponId);
-        lockExecutor.execute(lockName ,10000,10000, () -> {
-            Coupon coupon = findCoupon(couponId);
-            coupon.issue();
-            saveCouponIssue(couponId,userId);
-        });
-        log.info("쿠폰 발급 완료 :: 쿠폰 ID : %s , 유저 ID : %s".formatted(couponId,userId));
-
-
-
+        Coupon coupon = findCoupon(couponId);
+        coupon.issue();
+        saveCouponIssue(couponId,userId);
+        publishCouponEvent(coupon);
     }
 
     @Transactional
@@ -59,6 +55,12 @@ public class CouponIssueV1Service {
         CouponIssue issue = couponRepository.findFirstCouponIssue(couponId,userId);
         if (issue != null) {
             throw new CouponIssueException(ErrorCode.ALREADY_ISSUED, "이미 쿠폰이 발급 되었습니다.");
+        }
+    }
+
+    private void publishCouponEvent(Coupon coupon) {
+        if (coupon.isIssueComplete()) {
+            applicationEventPublisher.publishEvent(new CouponIssueCompleteEvent(coupon.getId()));
         }
     }
 
