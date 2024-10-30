@@ -1,6 +1,5 @@
 package org.example.couponcore.service;
 
-
 import static org.example.couponcore.exception.ErrorCode.ALREADY_ISSUED;
 import static org.example.couponcore.exception.ErrorCode.COUPON_NOT_EXIST;
 import static org.example.couponcore.exception.ErrorCode.INVALID_COUPON_ISSUE_QUANTITY;
@@ -23,10 +22,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-class CouponIssueV2ServiceTest extends TestConfig {
+class CouponIssueV3ServiceTest extends TestConfig {
 
     @Autowired
-    CouponIssueV2Service couponIssueV2Service;
+    CouponIssueV3Service couponIssueService;
 
     @Autowired
     CouponCacheService couponCacheService;
@@ -53,7 +52,7 @@ class CouponIssueV2ServiceTest extends TestConfig {
 
         CouponIssueRequestDto requestDto = new CouponIssueRequestDto(coupon.getId(),userId);
 
-        couponIssueV2Service.issue(coupon.getId(),userId);
+        couponIssueService.issue(coupon.getId(),userId);
 
         String requestResult =  redisTemplate.opsForList().leftPop(getCouponIssueQueue());
 
@@ -68,7 +67,7 @@ class CouponIssueV2ServiceTest extends TestConfig {
         long userId = 1;
 
         CouponIssueException exception = Assertions.assertThrows(CouponIssueException.class, () ->
-            couponIssueV2Service.issue(couponId,userId));
+            couponIssueService.issue(couponId,userId));
 
         Assertions.assertEquals(exception.getErrorCode(), COUPON_NOT_EXIST);
     }
@@ -87,7 +86,7 @@ class CouponIssueV2ServiceTest extends TestConfig {
         });
 
         CouponIssueException exception = Assertions.assertThrows(CouponIssueException.class, () ->
-            couponIssueV2Service.issue(coupon.getId(),userId));
+            couponIssueService.issue(coupon.getId(),userId));
 
         Assertions.assertEquals(exception.getErrorCode(), INVALID_COUPON_ISSUE_QUANTITY);
     }
@@ -95,7 +94,6 @@ class CouponIssueV2ServiceTest extends TestConfig {
     @Test
     @DisplayName("쿠폰 발급 - 이미 발급된 경우")
     void issue_fail_3() {
-        long couponId = 1;
         long userId = 1;
 
         Coupon coupon = MockData.getOverIssuedCoupon();
@@ -104,9 +102,9 @@ class CouponIssueV2ServiceTest extends TestConfig {
         redisTemplate.opsForSet().add(getCouponKey(coupon.getId()),String.valueOf(userId));
 
         CouponIssueException exception = Assertions.assertThrows(CouponIssueException.class, () ->
-            couponIssueV2Service.issue(couponId,userId));
+            couponIssueService.issue(coupon.getId(),userId));
 
-        Assertions.assertEquals(exception.getErrorCode(), ALREADY_ISSUED);
+        Assertions.assertEquals(ALREADY_ISSUED, exception.getErrorCode());
     }
 
 

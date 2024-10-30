@@ -22,15 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CouponIssueV2Service {
 
-    private final CouponJpaRepository couponJpaRepository;
     private final CouponCacheService couponCacheService;
     private final CouponIssueRedisService couponIssueRedisService;
     private final LockExecutor lockExecutor;
 
-    @Transactional(readOnly = true)
-    public Coupon findCoupon(long couponId){
-        return couponJpaRepository.findCouponById(couponId);
-    }
 
     public void issue(long couponId, long userId) {
 

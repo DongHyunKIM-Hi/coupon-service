@@ -4,6 +4,7 @@ package org.example.couponcore.service;
 import lombok.RequiredArgsConstructor;
 import org.example.couponcore.model.entity.base.Coupon;
 import org.example.couponcore.model.redis.CouponRedisEntity;
+import org.example.couponcore.repository.CouponJpaRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CouponCacheService {
 
+    private final CouponJpaRepository couponJpaRepository;
 
-    private final CouponIssueV2Service couponIssueV2Service;
 
     @Cacheable(cacheNames = "coupon")
     public CouponRedisEntity getCouponCache(long couponId) {
-        Coupon coupon = couponIssueV2Service.findCoupon(couponId);
+        Coupon coupon = couponJpaRepository.findCouponById(couponId);
         return new CouponRedisEntity(coupon);
     }
 }

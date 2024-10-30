@@ -13,5 +13,5 @@ class HelloWorld(FastHttpUser):
       "couponId" : 1
     }
 
-    with self.rest("POST", "/v1/issue", json=payload):
+    with self.rest("POST", "/v3/issue", json=payload):
       pass
