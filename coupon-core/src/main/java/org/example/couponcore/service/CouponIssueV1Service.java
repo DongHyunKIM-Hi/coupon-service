@@ -1,12 +1,10 @@
 package org.example.couponcore.service;
 
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.example.couponcore.exception.CouponIssueException;
 import org.example.couponcore.exception.ErrorCode;
 import org.example.couponcore.model.entity.base.Coupon;
 import org.example.couponcore.model.entity.base.CouponIssue;
-import org.example.couponcore.model.enums.CouponType;
 import org.example.couponcore.repository.CouponIssueJpaRepository;
 import org.example.couponcore.repository.CouponJpaRepository;
 import org.example.couponcore.repository.CouponRepository;
@@ -15,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class CouponIssueService {
+public class CouponIssueV1Service {
 
     private final CouponJpaRepository couponJpaRepository;
     private final CouponRepository couponRepository;

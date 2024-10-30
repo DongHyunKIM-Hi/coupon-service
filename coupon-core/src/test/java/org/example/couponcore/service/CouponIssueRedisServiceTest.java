@@ -23,10 +23,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-class CouponIssueRedisServiceTest extends TestConfig {
+class CouponIssueV2ServiceTest extends TestConfig {
 
     @Autowired
-    CouponIssueRedisService couponIssueRedisService;
+    CouponIssueV2Service couponIssueV2Service;
 
     @Autowired
     RedisTemplate<String, String> redisTemplate;
@@ -51,7 +51,7 @@ class CouponIssueRedisServiceTest extends TestConfig {
 
         CouponIssueRequestDto requestDto = new CouponIssueRequestDto(couponId,userId);
 
-        couponIssueRedisService.issue(coupon.getId(),userId);
+        couponIssueV2Service.issue(coupon.getId(),userId);
 
         String requestResult =  redisTemplate.opsForList().leftPop(getCouponIssueQueue());
 
@@ -66,7 +66,7 @@ class CouponIssueRedisServiceTest extends TestConfig {
         long userId = 1;
 
         CouponIssueException exception = Assertions.assertThrows(CouponIssueException.class, () ->
-            couponIssueRedisService.issue(couponId,userId));
+            couponIssueV2Service.issue(couponId,userId));
 
         Assertions.assertEquals(exception.getErrorCode(), COUPON_NOT_EXIST);
     }
@@ -85,7 +85,7 @@ class CouponIssueRedisServiceTest extends TestConfig {
         });
 
         CouponIssueException exception = Assertions.assertThrows(CouponIssueException.class, () ->
-            couponIssueRedisService.issue(coupon.getId(),userId));
+            couponIssueV2Service.issue(coupon.getId(),userId));
 
         Assertions.assertEquals(exception.getErrorCode(), INVALID_COUPON_ISSUE_QUANTITY);
     }
@@ -102,7 +102,7 @@ class CouponIssueRedisServiceTest extends TestConfig {
         redisTemplate.opsForSet().add(getCouponKey(coupon.getId()),String.valueOf(userId));
 
         CouponIssueException exception = Assertions.assertThrows(CouponIssueException.class, () ->
-            couponIssueRedisService.issue(couponId,userId));
+            couponIssueV2Service.issue(couponId,userId));
 
         Assertions.assertEquals(exception.getErrorCode(), ALREADY_ISSUED);
     }

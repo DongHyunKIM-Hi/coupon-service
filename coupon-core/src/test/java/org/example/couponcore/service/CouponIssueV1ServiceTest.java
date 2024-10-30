@@ -1,7 +1,5 @@
 package org.example.couponcore.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.example.couponcore.config.TestConfig;
 import org.example.couponcore.data.MockData;
 import org.example.couponcore.exception.CouponIssueException;
@@ -16,12 +14,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-class CouponIssueServiceTest extends TestConfig {
+class CouponIssueV1ServiceTest extends TestConfig {
 
     @Autowired
-    CouponIssueService service;
+    CouponIssueV1Service service;
 
     @Autowired
     CouponIssueJpaRepository couponIssueJpaRepository;
