@@ -12,7 +12,7 @@ public class CacheUpdateSubscriber implements MessageListener {
 
     private final CacheManager cacheManager;
 
-    public CacheUpdateSubscriber(@Qualifier("redisCacheManager") CacheManager cacheManager) {
+    public CacheUpdateSubscriber(@Qualifier("localCacheManager") CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 

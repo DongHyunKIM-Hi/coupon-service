@@ -35,15 +35,13 @@ public class CouponIssueRedisService {
 
     public void checkValidateToIssueCoupon(long couponId, long userId, CouponRedisEntity coupon) {
 
-        if(!coupon.availableIssueDate()) {
-            throw new CouponIssueException(ErrorCode.INVALID_COUPON_ISSUE_DATETIME, "발급 가능 일자가 지났습니다. 요청일자 %s, 발급 가능 시작일 : %s, 발급 가능 종료일 : %s".formatted(
-                LocalDate.now(), coupon.issueStartDateTime(), coupon.issueEndDateTime()
-            ));
-        }
-        if(!isAvailableQuantity(couponId,coupon.totalQuantity())) {
+       coupon.checkIssuableCoupon(); // 발급 수량 && 발급 기간 검증
+
+        if(!isAvailableQuantity(couponId,coupon.totalQuantity())) { // 발급 수량 검증 : redis 캐시 업데이트 처리 전에 요청이 들어올 수 있으니 한번 더 검증
             throw new CouponIssueException(ErrorCode.INVALID_COUPON_ISSUE_QUANTITY, "발급 수량을 초과했습니다. couponId: %s".formatted(couponId));
         }
-        if(!isAvailableIssue(couponId,userId)) {
+
+        if(!isAvailableIssue(couponId,userId)) { // 중복 발급 검증
             throw new CouponIssueException(ErrorCode.ALREADY_ISSUED, "이미 발급 처리가 되었습니다. userId : %s, couponId : %s".formatted(userId,couponId));
         }
     }
