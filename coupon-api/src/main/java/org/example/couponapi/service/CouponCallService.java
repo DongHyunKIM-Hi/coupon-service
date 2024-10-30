@@ -8,6 +8,7 @@ import org.example.couponcore.component.LockExecutor;
 import org.example.couponcore.service.CouponIssueRedisService;
 import org.example.couponcore.service.CouponIssueV1Service;
 import org.example.couponcore.service.CouponIssueV2Service;
+import org.example.couponcore.service.CouponIssueV3Service;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,25 +18,20 @@ public class CouponCallService {
 
     private final CouponIssueV1Service couponIssueV1Service;
     private final CouponIssueV2Service couponIssueV2Service;
-    private final CouponIssueRedisService couponIssueRedisService;
-    private final LockExecutor lockExecutor;
+    private final CouponIssueV3Service couponIssueV3Service;
 
-    public CouponIssueResponseDto issueRequest(CouponIssueRequestDto requestDto) {
-        String lockName = "lock_%s".formatted(requestDto.couponId());
-        lockExecutor.execute(lockName ,10000,10000, () -> {
-            couponIssueV1Service.issue(requestDto.couponId(),requestDto.userId());
-        });
-        log.info("쿠폰 발급 완료 :: 쿠폰 ID : %s , 유저 ID : %s".formatted(requestDto.couponId(),requestDto.couponId()));
+    public CouponIssueResponseDto issueRequestV1(CouponIssueRequestDto requestDto) {
+        couponIssueV1Service.issue(requestDto.couponId(),requestDto.userId());
         return new CouponIssueResponseDto(true,null);
     }
 
-    public CouponIssueResponseDto issueRequestBySortedSet(CouponIssueRequestDto requestDto) {
-        couponIssueRedisService.issueBySortedSet(requestDto.couponId(),requestDto.userId());
-        return new CouponIssueResponseDto(true,null);
-    }
-
-    public CouponIssueResponseDto issueRequestBySet(CouponIssueRequestDto requestDto) {
+    public CouponIssueResponseDto issueRequestV2(CouponIssueRequestDto requestDto) {
         couponIssueV2Service.issue(requestDto.couponId(),requestDto.userId());
+        return new CouponIssueResponseDto(true,null);
+    }
+
+    public CouponIssueResponseDto issueRequestV3(CouponIssueRequestDto requestDto) {
+        couponIssueV3Service.issue(requestDto.couponId(),requestDto.userId());
         return new CouponIssueResponseDto(true,null);
     }
 }

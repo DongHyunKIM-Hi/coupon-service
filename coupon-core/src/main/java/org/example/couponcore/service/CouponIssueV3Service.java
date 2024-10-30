@@ -12,7 +12,6 @@ public class CouponIssueV3Service {
 
     private final CouponCacheService couponCacheService;
     private final CouponIssueRedisService couponIssueRedisService;
-    private final LockExecutor lockExecutor;
     private final CouponRedisRepository couponRedisRepository;
 
     public void issue(long couponId, long userId) {

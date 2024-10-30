@@ -1,6 +1,8 @@
 package org.example.couponcore.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.couponcore.component.LockExecutor;
 import org.example.couponcore.exception.CouponIssueException;
 import org.example.couponcore.exception.ErrorCode;
 import org.example.couponcore.model.entity.base.Coupon;
@@ -13,18 +15,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CouponIssueV1Service {
 
     private final CouponJpaRepository couponJpaRepository;
     private final CouponRepository couponRepository;
     private final CouponIssueJpaRepository couponIssueJpaRepository;
+    private final LockExecutor lockExecutor;
 
 
     @Transactional
     public void issue(long couponId, long userId) {
-        Coupon coupon = findCoupon(couponId);
-        coupon.issue();
-        saveCouponIssue(couponId,userId);
+        String lockName = "lock_%s".formatted(couponId);
+        lockExecutor.execute(lockName ,10000,10000, () -> {
+            Coupon coupon = findCoupon(couponId);
+            coupon.issue();
+            saveCouponIssue(couponId,userId);
+        });
+        log.info("쿠폰 발급 완료 :: 쿠폰 ID : %s , 유저 ID : %s".formatted(couponId,userId));
+
+
 
     }
 

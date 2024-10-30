@@ -16,17 +16,17 @@ public class CouponController {
     private final CouponCallService couponCallService;
 
     @PostMapping("/v1/issue")
-    public ResponseEntity<CouponIssueResponseDto> couponIssue(@RequestBody CouponIssueRequestDto requestDto) {
-        return ResponseEntity.ok(couponCallService.issueRequest(requestDto));
+    public ResponseEntity<CouponIssueResponseDto> couponIssueV1(@RequestBody CouponIssueRequestDto requestDto) {
+        return ResponseEntity.ok(couponCallService.issueRequestV1(requestDto));
     }
 
     @PostMapping("/v2/issue")
-    public ResponseEntity<CouponIssueResponseDto> couponIssueBySortedSet(@RequestBody CouponIssueRequestDto requestDto) {
-        return ResponseEntity.ok(couponCallService.issueRequestBySortedSet(requestDto));
+    public ResponseEntity<CouponIssueResponseDto> couponIssueV2(@RequestBody CouponIssueRequestDto requestDto) {
+        return ResponseEntity.ok(couponCallService.issueRequestV2(requestDto));
     }
 
     @PostMapping("/v3/issue")
-    public ResponseEntity<CouponIssueResponseDto> couponIssueBySet(@RequestBody CouponIssueRequestDto requestDto) {
-        return ResponseEntity.ok(couponCallService.issueRequestBySet(requestDto));
+    public ResponseEntity<CouponIssueResponseDto> couponIssueV3(@RequestBody CouponIssueRequestDto requestDto) {
+        return ResponseEntity.ok(couponCallService.issueRequestV3(requestDto));
     }
 }
