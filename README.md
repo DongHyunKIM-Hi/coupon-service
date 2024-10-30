@@ -16,3 +16,7 @@ Redis 스크립트를 통한 해결 방안.
 처리 속도도 락을 걸지 않은 상태랑 비슷하고 결과는 락을 걸어서 처리한 것 처럼 정해진 수량 만큰만 발급되는 것을 확인함.
 ![image](https://github.com/user-attachments/assets/cebd0e0d-f327-4d0b-ab2a-faf4484b87b9)
 ![image](https://github.com/user-attachments/assets/fe6a710d-28c3-432f-bff8-709357cd34dc)
+
+**그럼 왜 V2, V3에서 차이가 나는 것일까?** <br>
+- 원자적 실행: Lua 스크립트는 Redis 서버 내에서 한 번의 요청으로 실행되므로, 네트워크 왕복 시간이 줄어들어 성능이 개선됨
+- 병렬 처리 지원: 여러 명령을 하나의 스크립트로 처리하므로, 추가적인 락 해제나 재시도가 필요 없어 오버헤드가 줄어듬
