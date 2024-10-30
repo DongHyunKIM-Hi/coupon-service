@@ -20,11 +20,11 @@ public class CouponRedisRepository  {
     }
 
     public Long sCard(String key) {
-        return redisTemplate.opsForZSet().size(key);
+        return redisTemplate.opsForSet().size(key);
     }
 
     public Boolean sIsMember(String key, String value) {
-        return redisTemplate.opsForSet().isMember(key,value);
+        return redisTemplate.opsForSet().isMember(key, value);
     }
 
     public Long rPush(String key, String value) {
