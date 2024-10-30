@@ -1,17 +1,17 @@
-## V1
+## V1 분산락 적용
 동시성 해결을 위해서 분산락으로 걸었을 떄 
 생각보다 처리량이 떨어짐
 ![스크린샷 2024-10-30 오후 2 44 41](https://github.com/user-attachments/assets/419fe908-63ac-463f-963d-ec78b3d3f481)
 ![image](https://github.com/user-attachments/assets/64c0e15f-30b8-4375-9f98-365a6cb3091e)
 ![스크린샷 2024-10-30 오후 1 56 14](https://github.com/user-attachments/assets/aa8647a9-ca08-4679-8718-0d4a702a819f)
 
-## V2
+## V2 일반적인 레디스 싱글 쓰레드를 믿고 감
 락을 걸지 않고 처리를 했을 때 처리량은 높음.
 처리 속도는 올라갔지만 정해진 수량인 600개를 초과하는 동시성 문제가 발생함.
 ![image](https://github.com/user-attachments/assets/e3a9e179-053e-4d6c-b17b-58c6dae402ca)
 ![image](https://github.com/user-attachments/assets/4cf756f1-288b-489f-b94b-322c334696d3)
 
-## V3
+## V3 레디스 스크립트를 통한 방법
 Redis 스크립트를 통한 해결 방안.
 처리 속도도 락을 걸지 않은 상태랑 비슷하고 결과는 락을 걸어서 처리한 것 처럼 정해진 수량 만큰만 발급되는 것을 확인함.
 ![image](https://github.com/user-attachments/assets/cebd0e0d-f327-4d0b-ab2a-faf4484b87b9)
@@ -21,6 +21,11 @@ Redis 스크립트를 통한 해결 방안.
 - 원자적 실행: Lua 스크립트는 Redis 서버 내에서 한 번의 요청으로 실행되므로, 네트워크 왕복 시간이 줄어들어 성능이 개선됨
 - 병렬 처리 지원: 여러 명령을 하나의 스크립트로 처리하므로, 추가적인 락 해제나 재시도가 필요 없어 오버헤드가 줄어듬
 
+## V4 로컬 캐시를 사용하여 레디스 네트워크 통신을 최대한 줄인 방법
+로컬 캐시를 사용하여 Redis 네트워크 통신을 최대한 줄인 방안
+V2와 V3를 비교하면서 Redis 서비스 네트워크 통신 비용 때문에 성능 차이가 나는 것을 발견하였다.
+그럼 로컬 캐시를 사용하여 Redis 네트워크 통신을 좀 더 줄이면 성능이 좀 더 개선 되지 않을까? 하는 생각에 진행하였고 결과는 성공적이였음
+![image](https://github.com/user-attachments/assets/cae3ec97-de90-48fa-a2d5-c9f1ef02cd9e)
 
 
 ## 흐름
