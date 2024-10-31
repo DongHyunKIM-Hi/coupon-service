@@ -1,14 +1,13 @@
 package org.example.couponconsumer.repository;
 
-import org.example.couponcore.exception.CouponIssueException;
-import org.example.couponcore.exception.ErrorCode;
+import org.example.couponconsumer.entity.R2dbCoupon;
 import org.example.couponcore.model.entity.base.Coupon;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
-public interface CouponR2DBRepository extends ReactiveCrudRepository<Coupon, Long> {
+public interface CouponR2DBRepository extends ReactiveCrudRepository<R2dbCoupon, Long> {
 
-    Mono<Coupon> findById(Long couponId);
+    Mono<R2dbCoupon> findById(Long couponId);
     /*
     default Mono<Coupon> findCouponById(Long couponId) {
         return findById(couponId)

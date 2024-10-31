@@ -2,6 +2,8 @@ package org.example.couponconsumer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.couponconsumer.entity.R2dbCoupon;
+import org.example.couponconsumer.entity.R2dbCouponIssue;
 import org.example.couponconsumer.repository.CouponIssueR2DBRepository;
 import org.example.couponconsumer.repository.CouponR2DBRepository;
 import org.example.couponconsumer.repository.CouponR2DBRepositoryClient;
@@ -41,12 +43,12 @@ public class CouponIssueService {
     }
 
     @Transactional
-    public Mono<CouponIssue> saveCouponIssue(long couponId, long userId) {
+    public Mono<R2dbCouponIssue> saveCouponIssue(long couponId, long userId) {
         return checkAlreadyIssuance(couponId, userId)
-            .switchIfEmpty(Mono.defer(() -> couponIssueR2DBRepository.save(CouponIssue.build(couponId, userId))));
+            .switchIfEmpty(Mono.defer(() -> couponIssueR2DBRepository.save(R2dbCouponIssue.build(couponId, userId))));
     }
 
-    private Mono<CouponIssue> checkAlreadyIssuance(long couponId, long userId) {
+    private Mono<R2dbCouponIssue> checkAlreadyIssuance(long couponId, long userId) {
         return couponR2DBRepositoryClient.findFirstCouponIssue(couponId, userId)
             .flatMap(issue -> {
                 if (issue != null) {
@@ -56,14 +58,13 @@ public class CouponIssueService {
             });
     }
 
-    @Transactional(readOnly = true)
-    public Mono<Coupon> findCoupon(long couponId) {
+    public Mono<R2dbCoupon> findCoupon(long couponId) {
         return couponR2DBRepository.findById(couponId);
     }
 
 
 
-    private void publishCouponEvent(Coupon coupon) {
+    private void publishCouponEvent(R2dbCoupon coupon) {
         if (coupon.isIssueComplete()) {
             applicationEventPublisher.publishEvent(new CouponIssueCompleteEvent(coupon.getId()));
         }
