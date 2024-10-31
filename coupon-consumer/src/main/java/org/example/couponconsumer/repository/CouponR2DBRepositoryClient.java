@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Repository
-public class CouponRepository {
+public class CouponR2DBRepositoryClient {
 
     private final DatabaseClient databaseClient;
 

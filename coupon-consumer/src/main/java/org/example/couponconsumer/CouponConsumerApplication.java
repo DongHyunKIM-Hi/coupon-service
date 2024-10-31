@@ -4,6 +4,7 @@ import org.example.couponcore.CouponCoreConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Import(CouponCoreConfiguration.class)
 @SpringBootApplication

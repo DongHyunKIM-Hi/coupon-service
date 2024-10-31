@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CouponRedisRepository  {
+public class CouponReactiveRedisRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 

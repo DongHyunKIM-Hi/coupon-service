@@ -2,7 +2,7 @@ package org.example.couponcore.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.couponcore.model.redis.CouponRedisEntity;
-import org.example.couponcore.repository.CouponRedisRepository;
+import org.example.couponcore.repository.CouponReactiveRedisRepository;
 import org.example.couponcore.service.cache.CouponCacheService;
 import org.example.couponcore.service.cache.CouponIssueRedisService;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class CouponIssueV3Service {
 
     private final CouponCacheService couponCacheService;
     private final CouponIssueRedisService couponIssueRedisService;
-    private final CouponRedisRepository couponRedisRepository;
+    private final CouponReactiveRedisRepository couponReactiveRedisRepository;
 
     public void issue(long couponId, long userId) {             // 발급 요청 대기큐에 넣는 행위를 함
         // 쿠폰 정보를 가져오는데 1차로 로컬 캐시에서 가져오고
@@ -26,8 +26,8 @@ public class CouponIssueV3Service {
 
     public void issueRequest(long couponId, long userId, Integer totalQuantity) {
         if(totalQuantity == null) {
-            couponRedisRepository.issueRequest(couponId,userId,Integer.MAX_VALUE);
+            couponReactiveRedisRepository.issueRequest(couponId,userId,Integer.MAX_VALUE);
         }
-        couponRedisRepository.issueRequest(couponId,userId,totalQuantity);
+        couponReactiveRedisRepository.issueRequest(couponId,userId,totalQuantity);
     }
 }
