@@ -23,6 +23,7 @@ public class CacheConfig {
     private final RedisConnectionFactory redisConnectionFactory;
 
     @Bean(name = "redisCacheManager")
+    @Primary
     public CacheManager redisCacheManager() {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
             .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
@@ -36,7 +37,6 @@ public class CacheConfig {
     }
 
     @Bean(name = "localCacheManager")
-    @Primary
     public CacheManager localCacheManager() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()

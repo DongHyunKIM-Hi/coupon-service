@@ -1,8 +1,18 @@
 spring:
+  application:
+    name: coupon-consumer
   profiles:
     active: local
     include: core
-  application:
-    name: coupon-consumer
+  r2dbc:
+    url: r2dbc:mysql://localhost:3307/coupon
+    username: viva
+    password: 1234
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  main:
+    web-application-type: reactive
 server:
   port: 8081
