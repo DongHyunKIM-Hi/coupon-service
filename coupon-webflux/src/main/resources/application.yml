@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: coupon-webflux
+  profiles:
+    active: local
+  r2dbc:
+    url: r2dbc:mysql://localhost:3307/coupon
+    username: viva
+    password: 1234
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  main:
+    web-application-type: reactive
+server:
+  port: 8082

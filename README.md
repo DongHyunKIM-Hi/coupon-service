@@ -27,6 +27,8 @@ V2와 V3를 비교하면서 Redis 서비스 네트워크 통신 비용 때문에
 그럼 로컬 캐시를 사용하여 Redis 네트워크 통신을 좀 더 줄이면 성능이 좀 더 개선 되지 않을까? 하는 생각에 진행하였고 결과는 성공적이였음
 ![image](https://github.com/user-attachments/assets/cae3ec97-de90-48fa-a2d5-c9f1ef02cd9e)
 
+## V5 Spring Webflux를 통하여 처리하는 속도를 비동기로 더 빠르게 처리하게 수정함.
+
 
 ## 흐름
 

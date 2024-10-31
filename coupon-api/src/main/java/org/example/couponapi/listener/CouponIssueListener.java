@@ -23,7 +23,7 @@ public class CouponIssueListener {
     private final CouponReactiveRedisRepository couponReactiveRedisRepository;
     private final CouponIssueV1Service couponIssueService;
 
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
     public void issue() {
         log.info("listen...");
         while (existCouponIssueTarget()) {
