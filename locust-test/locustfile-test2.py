@@ -10,8 +10,8 @@ class HelloWorld(FastHttpUser):
   def hello(self):
     payload = {
       "userId" : random.randint(1, 10000000),
-      "couponId" : 1
+      "couponId" : 2
     }
 
-    with self.rest("POST", "/v3/issue", json=payload):
+    with self.rest("POST", "/v2/issue", json=payload):
       pass
