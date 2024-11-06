@@ -52,6 +52,13 @@ V2와 V3를 비교하면서 Redis 서비스 네트워크 통신 비용 때문에
 
 ## V5 Spring Webflux를 통하여 처리하는 속도를 비동기로 더 빠르게 처리하게 수정함.
 
+![image](https://github.com/user-attachments/assets/50ad577c-58b6-4f3b-ae40-be03973ba18b)
+![1](https://github.com/user-attachments/assets/c29deba0-9d8d-490e-83dd-8570fc5c11e8)
+<img width="787" alt="2" src="https://github.com/user-attachments/assets/d2336b5f-e6fe-45a8-899a-ed5f6402d7ef">
+
+
+## 결론 : MVC 보다 3배 정도 처리량이 높아 졌다.
+
 10초 마다 작업큐에 있는 메시지 가져와서 쿠폰을 발급해줌
 
 발급에 성공하면 작업큐에서 제거.
